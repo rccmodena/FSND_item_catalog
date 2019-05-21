@@ -2,3 +2,4 @@ __pycache__
 *.pyc
 .vagrant
 client_secrets.json
+*.db
