@@ -1,0 +1,27 @@
+body {
+    font-family: 'Josefin Sans', sans-serif;
+    background-color: #EEE;
+}
+
+.header-margin {
+  margin-top: 100px;
+  padding: 30px;
+}
+
+nav {
+  border-right: 2px solid black;
+}
+
+li {
+  color: red;
+  list-style: none;
+}
+
+.zero_margin {
+  margin: 0px;
+}
+
+#flash_messages {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
