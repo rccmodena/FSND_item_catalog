@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container">
       <div class="mr-auto p-2">
-        <h1 class="text-light">Catalog App</h1>
+        <a href="{{url_for('showCategories')}}"><h1 class="text-light">Catalog App</h1></a>
       </div>
       {%if 'username' not in session %}
         <div class="p-2">

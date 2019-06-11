@@ -53,7 +53,7 @@
 
       <div id="signin_card" class="card text-center bg-light">
         <div class="card-body">
-          <h2 id="signin_title"class="card-title">Sign in to your account</h2>
+          <h2 id="signin_title" class="card-title">Sign in to your account</h2>
           <button class="btn shadow p-3 mb-5 bg-white rounded" id="signinButton">
             <img id="google_logo" src="{{ url_for('static', filename='google_logo.svg') }}" alt="Google Logo">
             Sign in with Google</button>
@@ -66,7 +66,6 @@
       $('#signinButton').click(function() {
         // signInCallback defined in step 6.
         auth2.grantOfflineAccess().then(signInCallback);
-        $('#signin_title').text("Redirecting...")
       });
     </script>
 
@@ -76,6 +75,7 @@
       if (authResult['code']) {
 
         // Hide the sign-in button now that the user is authorized, for example:
+        $('#signin_title').text("Redirecting...")
         $('#signinButton').attr('style', 'display: none');
 
         // Send the code to the server

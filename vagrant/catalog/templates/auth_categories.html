@@ -15,15 +15,15 @@
   </div>
   <div class="row">
     <nav class="col-md-3">
-      <h2>Categories</h2>
-      <div class="text-center">
+      <h2 class="padding_bottom">Categories</h2>
+      <div class="text-center padding_bottom">
         <a class="btn btn-success" role="button" id="login"
-        href="{{url_for('showLogin')}}">Add Category</a>
+        href="{{url_for('newCategory')}}">Add Category</a>
       </div>
       <ul>
         {% for category in categories %}
           <li>
-      		<a href = "{{url_for('showItems', category_name = category.name)}}">{{category.name}}</a>
+      		<a class="lead text_red" href = "{{url_for('showItems', category_name = category.name)}}">{{category.name}}</a>
           </li>
       	{% endfor %}
       </ul>
@@ -32,9 +32,10 @@
       <h2>Latest Items</h2>
       <ul>
         {% for item in latest_items %}
-          <li>
-      		<a href = "{{url_for('showItem', category_name = category.name, item_name = item.name)}}">{{item.name}} <span class="text-muted"> <em>({{category.name}}) </em></span></a>
-          </li>
+        <li>
+          <a class="lead text_red" href = "{{url_for('showItem', category_name = item.Category, item_title = item.Title)}}">
+          {{item.Title}} <span class="text-muted"> <em>({{item.Category}}) </em></span></a>
+        </li>
       	{% endfor %}
       </ul>
     </main>
