@@ -1,0 +1,40 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+<div class="container header-margin bg-white">
+  <div class="row">
+    <div class="col-md-11 col-md-offset-1 padding_bottom">
+      <h2>New Item</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-1">
+      <form action="{{ url_for('newCategoryItem', category_name = category.name)}}" method = "POST">
+         <div class="form-group">
+          <label for="item_title">Title:</label>
+          <input id="item_title" type ="text" class="form-control" maxlength="100" name="title" autofocus>
+        </div>
+        <div class="form-group">
+          <label for="item_description">Description:</label>
+          <textarea id="item_description" name="description" class="form-control" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="item_category">Category:</label>
+          <select id="item_category" class="form-control" name="select_category">
+            {% for categ in categories %}
+              {% if categ.name == category.name %}
+                <option selected value="{{categ.name}}">{{categ.name}}</option>
+              {% else %}
+                <option value="{{categ.name}}">{{categ.name}}</option>
+              {% endif %}
+          	{% endfor %}
+          </select>
+        </div>
+        <div class="padding_bottom"></div>
+        <button type="submit" class="btn btn-success text-white" id="submit" >Create</button>
+        <a href="{{url_for('showItems', category_name = category.name)}}" class="btn btn-danger text-white">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
