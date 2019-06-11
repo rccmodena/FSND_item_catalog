@@ -13,8 +13,15 @@ nav {
 }
 
 li {
-  color: red;
   list-style: none;
+}
+
+.text_red {
+  color: red;
+}
+
+.text_red:hover {
+  color: red;
 }
 
 .zero_margin {
@@ -24,4 +31,8 @@ li {
 #flash_messages {
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.padding_bottom {
+  padding-bottom: 20px;
 }
