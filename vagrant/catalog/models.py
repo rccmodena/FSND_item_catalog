@@ -7,15 +7,16 @@ This module has three classes:
     - CategoryItem: the class that creates the table of the category items.
 """
 
-from sqlalchemy import Column, Integer, String, ForeignKey, Text
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine
-from sqlalchemy.orm import relationship
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
-# Returns a new base class from which all mapped classes should inherit
-Base = declarative_base()
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///item_catalog.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
-class User(Base):
+
+class User(db.Model):
     """
     The class that creates the table of the users.
 
@@ -38,10 +39,10 @@ class User(Base):
 
     __tablename__ = 'user'
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
-    email = Column(String(250), nullable=False)
-    picture = Column(String(250))
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(250), nullable=False)
+    email = db.Column(db.String(250), nullable=False)
+    picture = db.Column(db.String(250))
 
     @property
     def serialize(self):
@@ -54,11 +55,12 @@ class User(Base):
             Information about the user: id, name and email.
         """
         return {
-            'id' : self.id,
+            'id': self.id,
             'name': self.name,
-            'email' : self.email,}
+            'email': self.email}
 
-class Category(Base):
+
+class Category(db.Model):
     """
     The class that creates the table of the categories.
 
@@ -79,10 +81,10 @@ class Category(Base):
 
     __tablename__ = 'category'
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
-    user_id = Column(Integer,ForeignKey('user.id'))
-    user = relationship(User)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(250), unique=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship(User)
 
     @property
     def serialize(self):
@@ -95,10 +97,11 @@ class Category(Base):
             Information about the category: id and name.
         """
         return {
-            'id' : self.id,
-            'name': self.name,}
+            'id': self.id,
+            'name': self.name}
 
-class CategoryItem(Base):
+
+class CategoryItem(db.Model):
     """
     The class that creates the table of the category items.
 
@@ -106,28 +109,50 @@ class CategoryItem(Base):
     -----------
     id : Integer
         Primary key of the table
-    name : String(250)
-        The name of the category
+    title : String(250)
+        The title of the item
+    description : Text
+        The description of the item
+    cat_id : Integer
+        The category id that the item belongs
     user_id : Integer
         The user id that created the category
 
     Methods:
     --------
     serialize()
-        Return a dictionary with information about the category.
+        Return a dictionary with information about the item.
     """
-    __tablename__ = 'category_item'
 
-    id = Column(Integer, primary_key=True)
-    title = Column(String(250), nullable=False)
-    description = Column(Text)
-    cat_id = Column(Integer,ForeignKey('category.id'))
-    category = relationship(Category)
-    user_id = Column(Integer,ForeignKey('user.id'))
-    user = relationship(User)
+    __tablename__ = 'categoryitem'
 
-# Create an engine that stores data in the local directory's
-engine = create_engine('sqlite:///item_catalog.db')
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(250), unique=True, nullable=False)
+    description = db.Column(db.Text)
+    cat_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    category = db.relationship(
+        Category,
+        backref=db.backref("categoryitem", cascade="all, delete-orphan"))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship(User)
 
-# Create all tables in the engine.
-Base.metadata.create_all(engine)
+    @property
+    def serialize(self):
+        """
+        Return a dictionary with information about the item.
+
+        Returns:
+        --------
+        dictionary
+            Information about the item: id, title, description and cat_id.
+        """
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'cat_id': self.cat_id}
+
+
+# If run this module will create all tables.
+if __name__ == '__main__':
+    db.create_all()
