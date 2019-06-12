@@ -26,18 +26,37 @@ To install this project there are two ways:
 Create a file inside the folder /vagrant/catalog with the name cliente_secrets.json. Put the following content inside:
 
 ```sh
-{
-
-}
+{"web":{"client_id":"PUT_HERE_THE_GOOGLE_CLIENT_ID","project_id":"PUT_HERE_THE_PROJECT_ID","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v2/certs","client_secret":"PUT_HERE_THE CLIENT_SECRET","redirect_uris":["http://localhost:8000"],"javascript_origins":["http://localhost:8000"]}}
 ```
+Replace uppercase text with the correct information about the Google Developer Account.
 
+#### 4 - Create Database
+
+The last step is to create the database for the application. In order to do so, run the following commands in the terminal:
+
+```sh
+$ vagrant up
+$ vagrant ssh
+$ cd /vagrant/catalog
+$ python models.py
+```
 
 ## Requirements
 
 This project was implemented with **Python 2.7.12**.
 
 The Python Libraries used were:
-- [???](http://)
+- flask
+- flask_sqlalchemy
+- oauth2client
+- random
+- string
+- json
+- httplib2
+- requests
+
+All these Libraries were installed in the virtual machine, but in order to install in other environment, use the [requirements.txt](requirements.txt) file.
+
 
 ## Running the Item Catalog
 
