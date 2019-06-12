@@ -58,11 +58,33 @@ The Python Libraries used were:
 All these Libraries were installed in the virtual machine, but in order to install in other environment, use the [requirements.txt](requirements.txt) file.
 
 
-## Running the Item Catalog
+## Running the Item Catalog Web Server
 
 To run the program, you only need to type the following command, inside the folder /vagrant/catalog on the vitual machine:
 ```sh
 $ python application.py
+```
+
+## Item Catalog API
+
+There are three API endpoints:
+
+- Retrieve all categories and its items that were created in the catalog:
+
+```sh
+http://localhost:8000/catalog.json
+```
+
+- Retrieve a specific category with its items:
+
+```sh
+http://localhost:8000/catalog/<CATEGORY_NAME>/items/JSON
+```
+
+- Retrieve a specific item:
+
+```sh
+http://localhost:8000/catalog/<CATEGORY_NAME>/<ITEM_NAME>/JSON
 ```
 
 ## Code Quality
