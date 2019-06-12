@@ -229,13 +229,21 @@ def newCategory():
 
     # Execute if is a POST method
     if request.method == 'POST':
-        newCategory = Category(
-            name=request.form['name'],
-            user_id=login_session['user_id'])
-        db.session.add(newCategory)
-        db.session.commit()
-        flash('New Category %s Successfully Created!' % newCategory.name)
-        return redirect(url_for('showCategories'))
+
+        # Verify if the name was informed to create the category
+        if request.form['name']:
+            newCategory = Category(
+                name=request.form['name'],
+                user_id=login_session['user_id'])
+            db.session.add(newCategory)
+            db.session.commit()
+            flash('New Category %s Successfully Created!' % newCategory.name)
+            return redirect(url_for('showCategories'))
+
+        # Show a message to inform the name
+        else:
+            flash('You need to inform a name!')
+            return render_template('new_category.html')
 
     # Execute if is a GET method
     else:
@@ -258,12 +266,18 @@ def editCategory(category_name):
 
     # Execute if is a POST method
     if request.method == 'POST':
+        # Verify if the name was informed to create the category
         if request.form['name']:
             editedCategory.name = request.form['name']
             db.session.commit()
             flash('Category Successfully Edited %s!' % editedCategory.name)
-        return redirect(url_for(
-            'showItems', category_name=editedCategory.name))
+            return redirect(url_for(
+                'showItems', category_name=editedCategory.name))
+        # Show a message to inform the name
+        else:
+            flash('You need to inform a name!')
+            return render_template(
+                'edit_category.html', category=editedCategory)
 
     # Execute if is a GET method
     else:
@@ -332,17 +346,30 @@ def newCategoryItem(category_name):
 
     # Execute if is a POST method
     if request.method == 'POST':
-        category = Category.query.filter_by(
-            name=request.form['select_category']).first()
-        newCategoryItem = CategoryItem(
-            title=request.form['title'],
-            description=request.form['description'],
-            cat_id=category.id,
-            user_id=login_session['user_id'])
-        db.session.add(newCategoryItem)
-        db.session.commit()
-        flash('New Item %s Successfully Created!' % newCategoryItem.title)
-        return redirect(url_for('showItems', category_name=category.name))
+
+        # Verify if the title was informed to create the item
+        # The description is optional to create the item
+        if request.form['title']:
+            category = Category.query.filter_by(
+                name=request.form['select_category']).first()
+            newCategoryItem = CategoryItem(
+                title=request.form['title'],
+                description=request.form['description'],
+                cat_id=category.id,
+                user_id=login_session['user_id'])
+            db.session.add(newCategoryItem)
+            db.session.commit()
+            flash('New Item %s Successfully Created!' % newCategoryItem.title)
+            return redirect(url_for('showItems', category_name=category.name))
+
+        # Show a message to inform the name
+        else:
+            flash('You need to inform a title!')
+            category = Category.query.filter_by(name=category_name).first()
+            return render_template(
+                'new_item.html',
+                categories=categories,
+                category=category)
 
     # Execute if is a GET method
     else:
@@ -388,14 +415,28 @@ def editCategoryItem(category_name, item_title):
 
     # Execute if is a POST method
     if request.method == 'POST':
-        category = Category.query.filter_by(
-            name=request.form['select_category']).first()
-        editedItem.title = request.form['title']
-        editedItem.description = request.form['description']
-        editedItem.cat_id = category.id
-        db.session.commit()
-        flash('Item Successfully Edited %s!' % editedItem.title)
-        return redirect(url_for('showItems', category_name=category.name))
+
+        # Verify if the title was informed to create the item
+        # The description is optional to create the item
+        if request.form['title']:
+            category = Category.query.filter_by(
+                name=request.form['select_category']).first()
+            editedItem.title = request.form['title']
+            editedItem.description = request.form['description']
+            editedItem.cat_id = category.id
+            db.session.commit()
+            flash('Item Successfully Edited %s!' % editedItem.title)
+            return redirect(url_for('showItems', category_name=category.name))
+
+        # Show a message to inform the name
+        else:
+            flash('You need to inform a title!')
+            category = Category.query.filter_by(name=category_name).first()
+            return render_template(
+                'edit_item.html',
+                item=editedItem,
+                category=category,
+                categories=categories)
 
     # Execute if is a GET method
     else:

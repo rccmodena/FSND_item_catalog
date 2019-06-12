@@ -3,6 +3,17 @@
 {% include "header.html" %}
 <div class="container header-margin bg-white">
   <div class="row">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+    		<div id="flash_messages" class="col-md-12 text-center text-white bg-secondary">
+          {% for message in messages %}
+            <strong> {{ message }} </strong>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+  </div>
+  <div class="row">
     <div class="col-md-11 col-md-offset-1 padding_bottom">
       <h2>Edit Item</h2>
     </div>
@@ -12,7 +23,7 @@
       <form action="{{ url_for('editCategoryItem', category_name = category.name, item_title = item.title)}}" method = "POST">
          <div class="form-group">
           <label for="item_title">Title:</label>
-          <input id="item_title" type="text" class="form-control" maxlength="100" name="title" value="{{item.title}}" autofocus>
+          <input id="item_title" type="text" class="form-control" maxlength="100" name="title" value="{{item.title}}" required autofocus>
         </div>
         <div class="form-group">
           <label for="item_description">Description:</label>
