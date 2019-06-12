@@ -192,6 +192,31 @@ def catalogJSON():
     return jsonify(catalog)
 
 
+# JSON APIs to view Category Information
+@app.route('/catalog/<category_name>/items/JSON')
+def showItemsJSON(category_name):
+    catalog = {'Category': []}
+    category = Category.query.filter_by(name=category_name).first()
+    categ_items = category.serialize
+    items = CategoryItem.query.filter_by(cat_id=category.id).all()
+    categ_items['Items'] = [item.serialize for item in items]
+    catalog['Category'].append(categ_items)
+    return jsonify(catalog)
+
+
+# JSON APIs to view Item Information
+@app.route('/catalog/<category_name>/<item_title>/JSON')
+def showItemJSON(category_name, item_title):
+    catalog = {'Category': []}
+    category = Category.query.filter_by(name=category_name).first()
+    categ_items = category.serialize
+    item = CategoryItem.query.filter_by(
+        title=item_title, cat_id=category.id).first()
+    categ_items['Items'] = [item.serialize]
+    catalog['Category'].append(categ_items)
+    return jsonify(catalog)
+
+
 # Show all Categories
 @app.route('/')
 def showCategories():
