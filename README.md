@@ -1,3 +1,5 @@
+![Approved Image](https://rccmodena.github.io/FSND_build_a_portfolio_site/img/approved.png)
+
 # Project: Item Catalog
 
 This is the fourth project of the Udacity's Full Stack Web Developers Nanodegree.
